@@ -1,9 +1,12 @@
 package main
 
 import (
-	"fmt"
+	f "fmt"
 	"toko/config"
 	"toko/users"
+	"toko/barang"
+	"os"
+	"bufio"
 )
 
 func main() {
@@ -14,43 +17,47 @@ func main() {
 	var cfg = config.ReadConfig()
 	var conn = config.DBConnection(*cfg)
 	var authMenu = users.AuthMenu{DB: conn}
+	var iniBarang = barang.MenuBarang{DB: conn}
+
+	// membuat scan kalimat
+	scanner := bufio.NewScanner(os.Stdin)
 
 	for inputMenu != 0 {
-		fmt.Println("1. Login")
-		fmt.Println("0. Exit")
-		fmt.Print("Masukan Pilihan : ")
-		fmt.Scanln(&inputMenu)
+		f.Println("1. Login")
+		f.Println("0. Exit")
+		f.Print("Masukan Pilihan : ")
+		f.Scanln(&inputMenu)
 		if inputMenu == 1 {
-			fmt.Print("Masukan Username : ")
-			fmt.Scanln(&inputUsername)
-			fmt.Print("Masukan Password : ")
-			fmt.Scanln(&inputPassword)
+			f.Print("Masukan Username : ")
+			f.Scanln(&inputUsername)
+			f.Print("Masukan Password : ")
+			f.Scanln(&inputPassword)
 
 			if inputUsername == "admin" && inputPassword == "admin" {
-				fmt.Println("Welcome Admin")
+				f.Println("Welcome Admin")
 				var isAdmin bool = true
 				var menuAdmin int
 
 				for isAdmin {
-					fmt.Println("1. Register Pegawai")
-					fmt.Println("9. Logout")
-					fmt.Print("Masukan Pilihan : ")
-					fmt.Scanln(&menuAdmin)
+					f.Println("1. Register Pegawai")
+					f.Println("9. Logout")
+					f.Print("Masukan Pilihan : ")
+					f.Scanln(&menuAdmin)
 					switch menuAdmin {
 					case 1:
 						var newUser users.Pegawai
-						fmt.Print("Masukkan nama : ")
-						fmt.Scanln(&newUser.Username)
-						fmt.Print("Masukkan password : ")
-						fmt.Scanln(&newUser.Password)
+						f.Print("Masukkan nama : ")
+						f.Scanln(&newUser.Username)
+						f.Print("Masukkan password : ")
+						f.Scanln(&newUser.Password)
 						res, err := authMenu.Register(newUser)
 						if err != nil {
-							fmt.Println(err.Error())
+							f.Println(err.Error())
 						}
 						if res {
-							fmt.Println("Sukses mendaftarkan data")
+							f.Println("Sukses mendaftarkan data")
 						} else {
-							fmt.Println("Gagal mendaftarn data")
+							f.Println("Gagal mendaftarn data")
 						}
 					case 9:
 						isAdmin = !isAdmin
@@ -60,20 +67,35 @@ func main() {
 			} else {
 				res, err := authMenu.Login(inputUsername, inputPassword)
 				if err != nil {
-					fmt.Println(err.Error())
+					f.Println(err.Error())
 				}
 
 				if res.ID > 0 {
 					isLogin := true
 					inputMenuPegawai := 0
 					for isLogin {
-						fmt.Println("1. Tambah Barang")
-						fmt.Println("9. Exit")
-						fmt.Print("Masukan Pilihan : ")
-						fmt.Scanln(&inputMenuPegawai)
+						f.Println("1. Tambah Barang")
+						f.Println("9. Exit")
+						f.Print("Masukan Pilihan : ")
+						f.Scanln(&inputMenuPegawai)
 
 						if inputMenuPegawai == 1 {
-							fmt.Println("tambah Barang")
+							insertBarang := barang.Barang{}
+							f.Print("Nama Barang: ")
+							scanner.Scan()
+							insertBarang.Nama = scanner.Text()
+							f.Print("Deskripsi barang: ")
+							scanner.Scan()
+							insertBarang.Nama = scanner.Text()
+							f.Print("Jumlah barang: ")
+							f.Scanln(&insertBarang.Stok)
+
+							_, err := iniBarang.TambahBarang(insertBarang)
+								if err != nil {
+									f.Println("Barang Gagal Ditambahkan", err.Error())
+								}
+								f.Println("Barang Berhasil Ditambahkan")
+
 						} else if inputMenuPegawai == 9 {
 							isLogin = false
 						}
