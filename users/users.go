@@ -17,7 +17,7 @@ type AuthMenu struct {
 }
 
 func (am *AuthMenu) Login(nama string, password string) (Pegawai, error) {
-	loginQry, err := am.DB.Prepare("SELECT id FROM users WHERE username = ? AND password = ?")
+	loginQry, err := am.DB.Prepare("SELECT id FROM pegawai WHERE username = ? AND password = ?")
 	if err != nil {
 		log.Println("prepare insert user ", err.Error())
 		return Pegawai{}, errors.New("prepare statement insert user error")
