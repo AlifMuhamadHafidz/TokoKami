@@ -42,7 +42,7 @@ func (am *AuthMenu) Login(nama string, password string) (Pegawai, error) {
 
 	return res, nil
 }
-=======
+
 // Function untuk menambah pegawai baru
 func (am *AuthMenu) Register(tambahPegawai Pegawai) (bool, error) {
 	registerQry, err := am.DB.Prepare("INSERT INTO pegawai (username, password) values (?,?)")
