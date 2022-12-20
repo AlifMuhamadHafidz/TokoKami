@@ -16,6 +16,33 @@ type AuthMenu struct {
 	DB *sql.DB
 }
 
+
+func (am *AuthMenu) Login(nama string, password string) (Pegawai, error) {
+	loginQry, err := am.DB.Prepare("SELECT id FROM users WHERE username = ? AND password = ?")
+	if err != nil {
+		log.Println("prepare insert user ", err.Error())
+		return Pegawai{}, errors.New("prepare statement insert user error")
+	}
+
+	row := loginQry.QueryRow(nama, password)
+
+	if row.Err() != nil {
+		log.Println("login query ", row.Err().Error())
+		return Pegawai{}, errors.New("tidak bisa login, data tidak ditemukan")
+	}
+	res := Pegawai{}
+	err = row.Scan(&res.ID)
+
+	if err != nil {
+		log.Println("after login query ", err.Error())
+		return Pegawai{}, errors.New("tidak bisa login, kesalahan setelah error")
+	}
+
+	res.Nama = nama
+
+	return res, nil
+}
+=======
 // Function untuk menambah pegawai baru
 func (am *AuthMenu) Register(tambahPegawai Pegawai) (bool, error) {
 	registerQry, err := am.DB.Prepare("INSERT INTO pegawai (username, password) values (?,?)")
@@ -59,3 +86,4 @@ func (am *AuthMenu) Duplicate(username string) bool {
 	}
 	return true
 }
+
