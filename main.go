@@ -1,6 +1,8 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 func main() {
 
@@ -31,17 +33,17 @@ func main() {
 					fmt.Scanln(&menuAdmin)
 					switch menuAdmin {
 					case 1:
-						fmt.Println("regis Karyawan")
+
 					case 9:
 						isAdmin = !isAdmin
 					}
-				}
 
-			} else {
-				fmt.Println("Bukan Adminn")
-				break
+				}
 			}
+
+		} else {
+			fmt.Println("Bukan Adminn")
+			break
 		}
 	}
-
 }
