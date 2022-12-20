@@ -1,12 +1,12 @@
 package main
 
 import (
+	"bufio"
 	f "fmt"
+	"os"
+	"toko/barang"
 	"toko/config"
 	"toko/users"
-	"toko/barang"
-	"os"
-	"bufio"
 )
 
 func main() {
@@ -86,15 +86,15 @@ func main() {
 							insertBarang.Nama = scanner.Text()
 							f.Print("Deskripsi barang: ")
 							scanner.Scan()
-							insertBarang.Nama = scanner.Text()
+							insertBarang.Info = scanner.Text()
 							f.Print("Jumlah barang: ")
 							f.Scanln(&insertBarang.Stok)
 
 							_, err := iniBarang.TambahBarang(insertBarang)
-								if err != nil {
-									f.Println("Barang Gagal Ditambahkan", err.Error())
-								}
-								f.Println("Barang Berhasil Ditambahkan")
+							if err != nil {
+								f.Println("Barang Gagal Ditambahkan", err.Error())
+							}
+							f.Println("Barang Berhasil Ditambahkan")
 
 						} else if inputMenuPegawai == 9 {
 							isLogin = false

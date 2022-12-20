@@ -7,10 +7,10 @@ import (
 )
 
 type Barang struct {
-	ID		int
-	Nama	string
-	Info	string
-	Stok	string
+	ID   int
+	Nama string
+	Info string
+	Stok string
 }
 
 type MenuBarang struct {
@@ -19,14 +19,14 @@ type MenuBarang struct {
 
 func (mb *MenuBarang) TambahBarang(newBarang Barang) (int, error) {
 	// menyiapakn query untuk insert
-	addActivityQry, err := mb.DB.Prepare("INSERT INTO barang (nama_barang, info_barang, stok_barang) values (?,?,?)")
+	addBarangQry, err := mb.DB.Prepare("INSERT INTO barang (nama_barang, info_barang, stok_barang) values (?,?,?)")
 	if err != nil {
 		log.Println("Prepare Insert Barang", err.Error())
 		return 0, errors.New("Prepare statement insert barang error")
 	}
 
 	// menjalankan query dengan parameter tertentu
-	res, err := addActivityQry.Exec(newBarang.Nama, newBarang.Info, newBarang.Stok)
+	res, err := addBarangQry.Exec(newBarang.Nama, newBarang.Info, newBarang.Stok)
 	if err != nil {
 		log.Println("Insert barang", err.Error())
 		return 0, errors.New("Insert barang error")
