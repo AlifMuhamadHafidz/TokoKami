@@ -80,7 +80,9 @@ func (am *AuthMenu) Duplicate(username string) bool {
 	var idExist int
 	err := res.Scan(&idExist)
 	if err != nil {
-		log.Println("Result scan error", err.Error())
+		if err.Error() != "sql: no rows in result set" {
+			log.Println("Result scan error", err.Error())
+		}
 		return false
 	}
 	return true
