@@ -7,7 +7,7 @@ import (
 )
 
 type Pegawai struct {
-	ID				int
+	ID		int
 	Username	string
 	Password	string
 }
