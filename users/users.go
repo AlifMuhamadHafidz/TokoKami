@@ -7,15 +7,14 @@ import (
 )
 
 type Pegawai struct {
-	ID		int
-	Username	string
-	Password	string
+	ID       int
+	Username string
+	Password string
 }
 
 type AuthMenu struct {
 	DB *sql.DB
 }
-
 
 func (am *AuthMenu) Login(nama string, password string) (Pegawai, error) {
 	loginQry, err := am.DB.Prepare("SELECT id FROM users WHERE username = ? AND password = ?")
@@ -38,7 +37,7 @@ func (am *AuthMenu) Login(nama string, password string) (Pegawai, error) {
 		return Pegawai{}, errors.New("tidak bisa login, kesalahan setelah error")
 	}
 
-	res.Nama = nama
+	res.Username = nama
 
 	return res, nil
 }
@@ -86,4 +85,3 @@ func (am *AuthMenu) Duplicate(username string) bool {
 	}
 	return true
 }
-
