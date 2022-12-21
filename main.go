@@ -77,6 +77,7 @@ func main() {
 					for isLogin {
 						f.Println("1. Tambah Barang")
 						f.Println("2. Edit Info Barang")
+						f.Println("3. Edit Stok Barang")
 						f.Println("9. Exit")
 						f.Print("Masukan Pilihan : ")
 						f.Scanln(&inputMenuPegawai)
@@ -116,9 +117,29 @@ func main() {
 								fmt.Println("Berhasil Update Info Barang")
 							}
 
+						} else if inputMenuPegawai == 3 {
+							var updateStokBarang int
+							updateBarang := barang.Barang{}
+							fmt.Print("Masukan Stok barang terbaru : ")
+							fmt.Scanln(&updateStokBarang)
+							fmt.Print("Masukan Nama Barang : ")
+							scanner.Scan()
+							updateBarang.Nama = scanner.Text()
+
+							isStokUpdated, err := iniBarang.EditStokBarang(updateStokBarang, updateBarang.Nama)
+
+							if err != nil {
+								fmt.Println(err.Error())
+							}
+
+							if isStokUpdated {
+								fmt.Println("Berhasil Update Stok Barang")
+							}
+
 						} else if inputMenuPegawai == 9 {
 							isLogin = false
 						}
+
 					}
 				}
 			}
