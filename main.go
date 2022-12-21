@@ -26,11 +26,15 @@ func main() {
 	scanner := bufio.NewScanner(os.Stdin)
 
 	for inputMenu != 0 {
+		f.Println("\n======= TokoKami =======")
+		f.Print(">> Halaman Utama\n\n")
 		f.Println("1. Login")
 		f.Println("0. Exit")
-		f.Print("Masukan Pilihan : ")
+		f.Print("Masukan Pilihan: ")
 		f.Scanln(&inputMenu)
 		if inputMenu == 1 {
+			f.Println("\n======= TokoKami =======")
+			f.Print(">> Halaman Login\n\n")
 			f.Print("Masukan Username : ")
 			f.Scanln(&inputUsername)
 			f.Print("Masukan Password : ")
@@ -42,103 +46,174 @@ func main() {
 				var menuAdmin int
 
 				for isAdmin {
-					f.Println("====================")
-					f.Println("1. Register Pegawai") //sudah
-					f.Println("2. List Pegawai")     //sudah
-					f.Println("3. Hapus Pegawai")    //sudah
-					f.Println("4. List Barang")      //sudah
-					f.Println("41. Hapus Barang")    //sudah
-					f.Println("5. List Pelanggan")
-					f.Println("51. Hapus Pelanggan")
-					f.Println("6. Hapus Transaksi")
-					f.Println("7. Hapus Nota")
-					f.Println("9. Logout") //sudah
+					f.Println("\n======= TokoKami =======")
+					f.Print(">> Halaman Menu Admin\n\n")
+					f.Println("1. Pegawai")   //sudah
+					f.Println("2. Barang")    //sudah
+					f.Println("3. Pelanggan")
+					f.Println("4. Transaksi")
+					f.Println("5. Nota")
+					f.Println("0. Logout")		//sudah
 					f.Print("Masukan Pilihan : ")
 					f.Scanln(&menuAdmin)
 
 					switch menuAdmin {
-
+					// START MENUADMIN ==> PEGAWAI
 					case 1:
-						var newUser users.Pegawai
-						f.Print("Masukkan nama : ")
-						f.Scanln(&newUser.Username)
-						f.Print("Masukkan password : ")
-						f.Scanln(&newUser.Password)
-						res, err := authMenu.Register(newUser)
-						if err != nil {
-							f.Println(err.Error())
-						}
-						if res {
-							f.Println("Sukses mendaftarkan data")
-						} else {
-							f.Println("Gagal mendaftarn data")
-						}
+						menuAdminPegawai := 1
+						for menuAdminPegawai != 0 {
+							f.Println("\n======= TokoKami =======")
+							f.Print(">> Halaman Admin Menu Pegawai\n\n")
+							f.Println("1. Create Pegawai") //sudah
+							f.Println("2. Read Pegawai")   //sudah
+							// f.Println("3. Update Pegawai")
+							f.Println("3. Delete Pegawai") //sudah
+							f.Println("0. <<= Back")       //sudah
+							f.Print("Masukan Pilihan: ")
+							f.Scanln(&menuAdminPegawai)
 
-						// List pegawai
+							// variabel menampung hasil select data pegawai
+							listPegawai := authMenu.ListPegawai()
+
+							switch menuAdminPegawai {
+							// Create Pegawai
+							case 1:
+								var newUser users.Pegawai
+								f.Println("\n======= TokoKami =======")
+								f.Print(">> Halaman Register Pegawai\n\n")
+								f.Print("Masukkan nama : ")
+								f.Scanln(&newUser.Username)
+								f.Print("Masukkan password : ")
+								f.Scanln(&newUser.Password)
+								res, err := authMenu.Register(newUser)
+								if err != nil {
+									f.Println(err.Error())
+								}
+								if res {
+									f.Println("Sukses mendaftarkan data")
+								} else {
+									f.Println("Gagal mendaftarn data")
+								}
+
+							// Read Pegawai
+							case 2:
+								f.Println("\n======= TokoKami =======")
+								f.Print(">> Halaman Daftar Pegawai\n\n")
+								f.Println("No | Nama")
+								f.Println("_____________")
+								// listPegawai := authMenu.ListPegawai()
+								for i := 0; i < len(listPegawai); i++ {
+									f.Print(" ", i+1, " | ")
+									for j := 1; j < len(listPegawai[i]); j++ {
+										f.Print(listPegawai[i][j])
+									}
+									f.Println()
+								}
+								f.Println("_____________")
+
+							// Delete Pegawai
+							case 3:
+								var inputNomor int
+								f.Println("\n======= TokoKami =======")
+								f.Print(">> Halaman Hapus Pegawai\n\n")
+								f.Print("Masukkan nomor pegawai yang akan dihapus: ")
+								f.Scanln(&inputNomor)
+								// listPegawai := authMenu.ListPegawai()
+								idDelete, _ := strconv.Atoi(listPegawai[inputNomor-1][0])
+								err := authMenu.DeletePegawai(idDelete)
+								if err != nil {
+									f.Println("Data gagal dihapus", err.Error())
+								} else {
+									f.Println("Data berhasil dihapus")
+								}
+							}
+						}
+					// END MENUADMIN ==> PEGAWAI
+
+					// START MENUADMIN ==> BARANG
 					case 2:
-						f.Println("<<-- List Pegawai -->>")
-						f.Println("No. Nama")
-						listPegawai := authMenu.ListPegawai()
-						for i := 0; i < len(listPegawai); i++ {
-							f.Print(" ", i+1, ". ")
-							for j := 1; j < len(listPegawai[i]); j++ {
-								f.Print(listPegawai[i][j])
-							}
-							f.Println()
-						}
+						menuAdminBarang := 1
+						for menuAdminBarang != 0 {
+							f.Println("\n======= TokoKami =======")
+							f.Print(">> Halaman Admin Menu Barang\n\n")
+							// f.Println("1. Create Barang")
+							f.Println("1. Read Barang") //sudah
+							// f.Println("3. Update Barang")
+							f.Println("2. Delete Pegawai") //sudah
+							f.Println("0. <<= Back")       //sudah
+							f.Print("Masukan Pilihan: ")
+							f.Scanln(&menuAdminBarang)
 
+							// variabel untuk menyimpan hasil select daftar barang
+							listBarang := iniBarang.ListBarang()	
+
+							switch menuAdminBarang {
+
+							// Read Barang
+							case 1:
+								f.Println("\n======= TokoKami =======")
+								f.Print(">> Halaman Daftar Barang\n\n")
+								f.Println("No |   Nama  | Stok")
+								f.Println("______________________")
+								// listBarang := iniBarang.ListBarang()
+								for i := 0; i < len(listBarang); i++ {
+									f.Print(" ", i+1, " | ")
+									for j := 1; j < len(listBarang[i]); j++ {
+										f.Print(listBarang[i][j], " | ")
+									}
+									f.Println()
+								}
+								f.Println("______________________")
+
+							// Delete Barang
+							case 2:
+								var inputNomor int
+								f.Println("\n======= TokoKami =======")
+								f.Print(">> Halaman Hapus Barang\n\n")
+								f.Print("Masukkan nomor barang yang akan dihapus: ")
+								f.Scanln(&inputNomor)
+								// listBarang := iniBarang.ListBarang()
+								idDelete, _ := strconv.Atoi(listBarang[inputNomor-1][0])
+								err := iniBarang.DeleteBarang(idDelete)
+								if err != nil {
+									f.Println("Barang gagal dihapus", err.Error())
+								} else {
+									f.Println("Barang berhasil dihapus")
+								}
+							}
+						}
+						// END MENUADMIN ==> BARANG
+
+					// START MENUADMIN ==> PELANGGAN
 					case 3:
-						var inputNomor int
-						f.Println("========================")
-						f.Println("~~ Halaman Hapus Pegawai ~~")
-						f.Print("Masukkan nomor pegawai yang akan dihapus: ")
-						f.Scanln(&inputNomor)
-						listPegawai := authMenu.ListPegawai()
-						idDelete, _ := strconv.Atoi(listPegawai[inputNomor-1][0])
-						err := authMenu.DeletePegawai(idDelete)
-						if err != nil {
-							f.Println("Data gagal dihapus", err.Error())
-						} else {
-							f.Println("Data berhasil dihapus")
-						}
+						f.Println("\n======= TokoKami =======")
+						f.Print(">> Halaman Admin Menu Pelanggan\n\n")
+						f.Println("Maintenance")
 
+					// END MENUADMIN ==> PELANGGAN
+
+					// START MENUADMIN ==> TRANSAKSI
 					case 4:
-						f.Println("<<-- List Barang -->>")
-						f.Println("No |   Nama | Stok")
-						f.Println("___________________")
-						listBarang := iniBarang.ListBarang()
-						for i := 0; i < len(listBarang); i++ {
-							f.Print(" ", i+1, " | ")
-							for j := 1; j < len(listBarang[i]); j++ {
-								f.Print(listBarang[i][j], " | ")
-							}
-							f.Println()
-						}
+						f.Println("\n======= TokoKami =======")
+						f.Print(">> Halaman Admin Menu Transaksi\n\n")
+						f.Println("Maintenance")
 
-					case 41:
-						var inputNomor int
-						f.Println("========================")
-						f.Println("~~ Halaman Hapus Barang ~~")
-						f.Print("Masukkan nomor barang yang akan dihapus: ")
-						f.Scanln(&inputNomor)
-						listBarang := iniBarang.ListBarang()
-						idDelete, _ := strconv.Atoi(listBarang[inputNomor-1][0])
-						err := iniBarang.DeleteBarang(idDelete)
-						if err != nil {
-							f.Println("Barang gagal dihapus", err.Error())
-						} else {
-							f.Println("Barang berhasil dihapus")
-						}
-
+					// START MENUADMIN ==> NOTA
 					case 5:
-						f.Println("Hapus Transaksi")
-					case 6:
-						f.Println("Hapus Nota")
-					case 9:
+						f.Println("\n======= TokoKami =======")
+						f.Print(">> Halaman Admin Menu Nota\n\n")
+						f.Println("Maintenance")
+
+					// END MENUADMIN ==> NOTA
+
+					// MENUADMIN LOGOUT
+					case 0:
 						isAdmin = !isAdmin
 					}
-
 				}
+				// END MENUADMIN
+
+				// START MENUPEGAWAI
 			} else {
 				res, err := authMenu.Login(inputUsername, inputPassword)
 				if err != nil {
@@ -149,6 +224,8 @@ func main() {
 					isLogin := true
 					inputMenuPegawai := 0
 					for isLogin {
+						f.Println("\n======= TokoKami =======")
+						f.Print(">> Halaman Menu Pegawai\n\n")
 						f.Println("1. Tambah Barang")
 						f.Println("2. Edit Info Barang")
 						f.Println("3. Edit Stok Barang")
@@ -158,11 +235,13 @@ func main() {
 						f.Scanln(&inputMenuPegawai)
 
 						if inputMenuPegawai == 1 {
+							f.Println("\n======= TokoKami =======")
+							f.Print(">> Halaman Tambah Barang\n\n")
 							insertBarang := barang.Barang{}
 							f.Print("Nama Barang: ")
 							scanner.Scan()
 							insertBarang.Nama = scanner.Text()
-							f.Print("Deskripsi barang: ")
+							f.Print("Info Barang: ")
 							scanner.Scan()
 							insertBarang.Info = scanner.Text()
 							f.Print("Jumlah barang: ")
@@ -176,6 +255,8 @@ func main() {
 
 						} else if inputMenuPegawai == 2 {
 							updateBarang := barang.Barang{}
+							f.Println("\n======= TokoKami =======")
+							f.Print(">> Halaman Update Info Barang\n\n")
 							f.Print("Masukan Nama Barang : ")
 							scanner.Scan()
 							updateBarang.Nama = scanner.Text()
@@ -195,6 +276,8 @@ func main() {
 						} else if inputMenuPegawai == 3 {
 							var updateStokBarang int
 							updateBarang := barang.Barang{}
+							f.Println("\n======= TokoKami =======")
+							f.Print(">> Halaman Update Stok Barang\n\n")
 							f.Print("Masukan Stok barang terbaru : ")
 							f.Scanln(&updateStokBarang)
 							f.Print("Masukan Nama Barang : ")
@@ -212,6 +295,8 @@ func main() {
 							}
 
 						} else if inputMenuPegawai == 8 {
+							f.Println("\n======= TokoKami =======")
+							f.Print(">> Halaman Register Pelanggan\n\n")
 							insertPelanggan := pelanggan.Pelanggan{}
 							f.Print("Nama Pelanggan: ")
 							scanner.Scan()
