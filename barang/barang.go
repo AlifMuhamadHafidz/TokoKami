@@ -49,7 +49,7 @@ func (mb *MenuBarang) TambahBarang(newBarang Barang) (int, error) {
 	return int(id), nil
 }
 
-func (mb *MenuBarang) EditInfoBarang(newBarang Barang, namaBarang int) (bool, error) {
+func (mb *MenuBarang) EditInfoBarang(newBarang Barang, namaBarang string) (bool, error) {
 	editInfoBarangQry, err := mb.DB.Prepare("UPDATE barang SET info_barang = ? where nama_barang = ?")
 
 	if err != nil {

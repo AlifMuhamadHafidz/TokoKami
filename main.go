@@ -107,14 +107,13 @@ func main() {
 							scanner.Scan()
 							updateBarang.Info = scanner.Text()
 
-							isUpdated, err := iniBarang.EditInfoBarang(updateBarang, res.ID)
+							isUpdated, err := iniBarang.EditInfoBarang(updateBarang, updateBarang.Nama)
 							if err != nil {
 								fmt.Println(err.Error())
 							}
 
 							if isUpdated {
 								fmt.Println("Berhasil Update Info Barang")
-								isLogin = false
 							}
 
 						} else if inputMenuPegawai == 9 {
