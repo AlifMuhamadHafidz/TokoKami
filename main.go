@@ -2,11 +2,11 @@ package main
 
 import (
 	"bufio"
-	"fmt"
 	f "fmt"
 	"os"
 	"toko/barang"
 	"toko/config"
+	"toko/pelanggan"
 	"toko/users"
 )
 
@@ -19,6 +19,7 @@ func main() {
 	var conn = config.DBConnection(*cfg)
 	var authMenu = users.AuthMenu{DB: conn}
 	var iniBarang = barang.MenuBarang{DB: conn}
+	var iniPelanggan = pelanggan.AuthPelanggan{DB: conn}
 
 	// membuat scan kalimat
 	scanner := bufio.NewScanner(os.Stdin)
@@ -78,6 +79,7 @@ func main() {
 						f.Println("1. Tambah Barang")
 						f.Println("2. Edit Info Barang")
 						f.Println("3. Edit Stok Barang")
+						f.Println("8. Tambah Pelanggan")
 						f.Println("9. Exit")
 						f.Print("Masukan Pilihan : ")
 						f.Scanln(&inputMenuPegawai)
@@ -101,39 +103,52 @@ func main() {
 
 						} else if inputMenuPegawai == 2 {
 							updateBarang := barang.Barang{}
-							fmt.Print("Masukan Nama Barang : ")
+							f.Print("Masukan Nama Barang : ")
 							scanner.Scan()
 							updateBarang.Nama = scanner.Text()
-							fmt.Print("Masukan info Barang Terbaru : ")
+							f.Print("Masukan info Barang Terbaru : ")
 							scanner.Scan()
 							updateBarang.Info = scanner.Text()
 
 							isUpdated, err := iniBarang.EditInfoBarang(updateBarang, updateBarang.Nama)
 							if err != nil {
-								fmt.Println(err.Error())
+								f.Println(err.Error())
 							}
 
 							if isUpdated {
-								fmt.Println("Berhasil Update Info Barang")
+								f.Println("Berhasil Update Info Barang")
 							}
 
 						} else if inputMenuPegawai == 3 {
 							var updateStokBarang int
 							updateBarang := barang.Barang{}
-							fmt.Print("Masukan Stok barang terbaru : ")
-							fmt.Scanln(&updateStokBarang)
-							fmt.Print("Masukan Nama Barang : ")
+							f.Print("Masukan Stok barang terbaru : ")
+							f.Scanln(&updateStokBarang)
+							f.Print("Masukan Nama Barang : ")
 							scanner.Scan()
 							updateBarang.Nama = scanner.Text()
 
 							isStokUpdated, err := iniBarang.EditStokBarang(updateStokBarang, updateBarang.Nama)
 
 							if err != nil {
-								fmt.Println(err.Error())
+								f.Println(err.Error())
 							}
 
 							if isStokUpdated {
-								fmt.Println("Berhasil Update Stok Barang")
+								f.Println("Berhasil Update Stok Barang")
+							}
+
+						} else if inputMenuPegawai == 8 {
+							insertPelanggan := pelanggan.Pelanggan{}
+							f.Print("Nama Pelanggan: ")
+							scanner.Scan()
+							insertPelanggan.Nama = scanner.Text()
+
+							_, err := iniPelanggan.TambahPelanggan(insertPelanggan)
+							if err != nil {
+								f.Println("Pelanggan Gagal Ditambahkan", err.Error())
+							} else {
+								f.Println("Pelanggan Berhasil Ditambahkan")
 							}
 
 						} else if inputMenuPegawai == 9 {
