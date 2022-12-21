@@ -48,3 +48,34 @@ func (mb *MenuBarang) TambahBarang(newBarang Barang) (int, error) {
 
 	return int(id), nil
 }
+
+func (mb *MenuBarang) EditInfoBarang(newBarang Barang, namaBarang int) (bool, error) {
+	editInfoBarangQry, err := mb.DB.Prepare("UPDATE barang SET info_barang = ? where nama_barang = ?")
+
+	if err != nil {
+		log.Println("Prepare update info barang", err.Error())
+		return false, errors.New("prepare statement update info barang error")
+	}
+
+	res, err := editInfoBarangQry.Exec(newBarang.Info, namaBarang)
+
+	if err != nil {
+		log.Println("Update info Barang", err.Error())
+		return false, errors.New("Update info Barang Error")
+	}
+
+	//Cek Baris yang terpengaruh query Update Info Barang
+	affRows, err := res.RowsAffected()
+
+	if err != nil {
+		log.Println("After Update Info Barang", err.Error())
+		return false, errors.New("Error setelah Update Info Barang")
+	}
+
+	if affRows < 0 {
+		log.Println("no records affected")
+		return false, errors.New("no Record")
+	}
+
+	return true, nil
+}

@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"fmt"
 	f "fmt"
 	"os"
 	"toko/barang"
@@ -75,6 +76,7 @@ func main() {
 					inputMenuPegawai := 0
 					for isLogin {
 						f.Println("1. Tambah Barang")
+						f.Println("2. Edit Info Barang")
 						f.Println("9. Exit")
 						f.Print("Masukan Pilihan : ")
 						f.Scanln(&inputMenuPegawai)
@@ -95,6 +97,25 @@ func main() {
 								f.Println("Barang Gagal Ditambahkan", err.Error())
 							}
 							f.Println("Barang Berhasil Ditambahkan")
+
+						} else if inputMenuPegawai == 2 {
+							updateBarang := barang.Barang{}
+							fmt.Print("Masukan Nama Barang : ")
+							scanner.Scan()
+							updateBarang.Nama = scanner.Text()
+							fmt.Print("Masukan info Barang Terbaru : ")
+							scanner.Scan()
+							updateBarang.Info = scanner.Text()
+
+							isUpdated, err := iniBarang.EditInfoBarang(updateBarang, res.ID)
+							if err != nil {
+								fmt.Println(err.Error())
+							}
+
+							if isUpdated {
+								fmt.Println("Berhasil Update Info Barang")
+								isLogin = false
+							}
 
 						} else if inputMenuPegawai == 9 {
 							isLogin = false
