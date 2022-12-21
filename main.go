@@ -55,7 +55,7 @@ func main() {
 					f.Scanln(&menuAdmin)
 
 					switch menuAdmin {
-					
+
 					case 1:
 						var newUser users.Pegawai
 						f.Println("Halaman Tambah Pegawai")
