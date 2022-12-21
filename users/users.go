@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"errors"
 	"log"
+	"strconv"
 )
 
 type Pegawai struct {
@@ -15,6 +16,7 @@ type Pegawai struct {
 type AuthMenu struct {
 	DB *sql.DB
 }
+
 
 func (am *AuthMenu) Login(nama string, password string) (Pegawai, error) {
 	loginQry, err := am.DB.Prepare("SELECT id FROM pegawai WHERE username = ? AND password = ?")
@@ -75,6 +77,7 @@ func (am *AuthMenu) Register(tambahPegawai Pegawai) (bool, error) {
 	return true, nil
 }
 
+
 func (am *AuthMenu) Duplicate(username string) bool {
 	res := am.DB.QueryRow("SELECT id FROM pegawai where username = ?", username)
 	var idExist int
@@ -86,4 +89,38 @@ func (am *AuthMenu) Duplicate(username string) bool {
 		return false
 	}
 	return true
+}
+
+// fungsi list daftar pegawai
+func (am *AuthMenu) ListPegawai() [][]string {
+	rows, err := am.DB.Query("SELECT id, username FROM pegawai")
+	if err != nil {
+		log.Println("SELECT ERROR", err.Error())
+	}
+	arrUser := []string{}
+	arrUsers := [][]string{}
+	for rows.Next() {
+		var id int
+		var username string
+		rows.Scan(&id, &username)
+		if err != nil {
+			log.Println("Error scan isi tabel pegawai", err.Error())
+		}
+		arrUser = append(arrUser, strconv.Itoa(id), username)
+		arrUsers = append(arrUsers, arrUser)
+		arrUser = nil
+	}
+	return arrUsers
+}
+
+
+// function hapus pegawai
+func (am *AuthMenu) DeletePegawai(id int) (error) {
+	_, err := am.DB.Query("DELETE FROM pegawai where id = ?", id)
+	if err != nil {
+		log.Println("Gagal saat menghapus", err.Error())
+		return errors.New("Data gagal dihapus")
+	}
+	// log.Println(row)
+	return nil
 }
