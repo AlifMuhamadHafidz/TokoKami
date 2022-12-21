@@ -58,7 +58,6 @@ func main() {
 
 					switch menuAdmin {
 
-					//
 					case 1:
 						var newUser users.Pegawai
 						f.Print("Masukkan nama : ")

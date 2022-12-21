@@ -1,6 +1,4 @@
-CREATE DATABASE tokokami;
-
-USE tokokami;
+use tokokami;
 
 CREATE TABLE pegawai (
   id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -11,9 +9,11 @@ CREATE TABLE pegawai (
 CREATE TABLE barang (
    id_barang int NOT NULL AUTO_INCREMENT PRIMARY KEY,
    nama_barang varchar(255) NOT NULL,
-   info_barang text NOT NULL, 
+   info_barang varchar(255) NOT NULL, 
    stok_barang int NOT NULL
 );
+
+
 
 CREATE TABLE pelanggan (
   id_pelanggan int NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -34,10 +34,19 @@ CREATE TABLE transaksi (
 
 CREATE TABLE nota (
   id_transaksi int NOT NULL,
-  id_pegawai int NOT NULL,
   id_barang int NOT NULL,
   qty int NOT NULL,
   CONSTRAINT fk_nota_transaksi FOREIGN KEY (id_transaksi) REFERENCES transaksi(id_transaksi),
-  CONSTRAINT fk_nota_pegawai FOREIGN KEY (id_pegawai) REFERENCES pegawai(id),
   CONSTRAINT fk_nota_barang FOREIGN KEY (id_barang) REFERENCES barang(id_barang)
 );
+
+SELECT * from pegawai;
+SELECT * from barang;
+SELECT * from pelanggan;
+
+drop table nota;
+
+
+
+
+
