@@ -36,21 +36,23 @@ func main() {
 			f.Print("Masukan Password : ")
 			f.Scanln(&inputPassword)
 
-			if inputUsername == "admin" && inputPassword == "admin" {
+			if inputUsername == "a" && inputPassword == "a" {
 				f.Println("Welcome Admin")
 				var isAdmin bool = true
 				var menuAdmin int
 
 				for isAdmin {
 					f.Println("====================")
-					f.Println("1. Register Pegawai")
-					f.Println("2. List Pegawai")
-					f.Println("3. Hapus Pegawai")
-					f.Println("4. Hapus Barang")
-					f.Println("5. Hapus Pelanggan")
+					f.Println("1. Register Pegawai") //sudah
+					f.Println("2. List Pegawai")     //sudah
+					f.Println("3. Hapus Pegawai")    //sudah
+					f.Println("4. List Barang")      //sudah
+					f.Println("41. Hapus Barang")    //sudah
+					f.Println("5. List Pelanggan")
+					f.Println("51. Hapus Pelanggan")
 					f.Println("6. Hapus Transaksi")
 					f.Println("7. Hapus Nota")
-					f.Println("9. Logout")
+					f.Println("9. Logout") //sudah
 					f.Print("Masukan Pilihan : ")
 					f.Scanln(&menuAdmin)
 
@@ -58,7 +60,6 @@ func main() {
 
 					case 1:
 						var newUser users.Pegawai
-						f.Println("Halaman Tambah Pegawai")
 						f.Print("Masukkan nama : ")
 						f.Scanln(&newUser.Username)
 						f.Print("Masukkan password : ")
@@ -73,7 +74,7 @@ func main() {
 							f.Println("Gagal mendaftarn data")
 						}
 
-					// List pegawai
+						// List pegawai
 					case 2:
 						f.Println("<<-- List Pegawai -->>")
 						f.Println("No. Nama")
@@ -86,7 +87,6 @@ func main() {
 							f.Println()
 						}
 
-					// Hapus pegawai
 					case 3:
 						var inputNomor int
 						f.Println("========================")
@@ -103,14 +103,37 @@ func main() {
 						}
 
 					case 4:
-						f.Println("Hapus Pelanggan")
+						f.Println("<<-- List Barang -->>")
+						f.Println("No |   Nama | Stok")
+						f.Println("___________________")
+						listBarang := iniBarang.ListBarang()
+						for i := 0; i < len(listBarang); i++ {
+							f.Print(" ", i+1, " | ")
+							for j := 1; j < len(listBarang[i]); j++ {
+								f.Print(listBarang[i][j], " | ")
+							}
+							f.Println()
+						}
+
+					case 41:
+						var inputNomor int
+						f.Println("========================")
+						f.Println("~~ Halaman Hapus Barang ~~")
+						f.Print("Masukkan nomor barang yang akan dihapus: ")
+						f.Scanln(&inputNomor)
+						listBarang := iniBarang.ListBarang()
+						idDelete, _ := strconv.Atoi(listBarang[inputNomor-1][0])
+						err := iniBarang.DeleteBarang(idDelete)
+						if err != nil {
+							f.Println("Barang gagal dihapus", err.Error())
+						} else {
+							f.Println("Barang berhasil dihapus")
+						}
 
 					case 5:
 						f.Println("Hapus Transaksi")
-
 					case 6:
 						f.Println("Hapus Nota")
-
 					case 9:
 						isAdmin = !isAdmin
 					}

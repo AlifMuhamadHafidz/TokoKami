@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"errors"
 	"log"
+	"strconv"
 )
 
 type Barang struct {
@@ -17,6 +18,8 @@ type MenuBarang struct {
 	DB *sql.DB
 }
 
+
+// CREATE
 func (mb *MenuBarang) TambahBarang(newBarang Barang) (int, error) {
 	// menyiapakn query untuk insert
 	addBarangQry, err := mb.DB.Prepare("INSERT INTO barang (nama_barang, info_barang, stok_barang) values (?,?,?)")
@@ -49,6 +52,8 @@ func (mb *MenuBarang) TambahBarang(newBarang Barang) (int, error) {
 	return int(id), nil
 }
 
+
+//UPDATE 1
 func (mb *MenuBarang) EditInfoBarang(newBarang Barang, namaBarang string) (bool, error) {
 	editInfoBarangQry, err := mb.DB.Prepare("UPDATE barang SET info_barang = ? where nama_barang = ?")
 
@@ -80,6 +85,7 @@ func (mb *MenuBarang) EditInfoBarang(newBarang Barang, namaBarang string) (bool,
 	return true, nil
 }
 
+// UPDATE 2
 func (mb *MenuBarang) EditStokBarang(stokBarang int, namaBarang string) (bool, error) {
 	editInfoBarangQry, err := mb.DB.Prepare("UPDATE barang SET stok_barang = ? where nama_barang = ?")
 
@@ -109,4 +115,38 @@ func (mb *MenuBarang) EditStokBarang(stokBarang int, namaBarang string) (bool, e
 	}
 
 	return true, nil
+}
+
+//READ
+func (mb *MenuBarang) ListBarang() [][]string {
+	rows, err := mb.DB.Query("SELECT id_barang, nama_barang, stok_barang FROM barang")
+	if err != nil {
+		log.Println("SELECT ERROR", err.Error())
+	}
+	arrBarang := []string{}
+	arrBarangs := [][]string{}
+	for rows.Next() {
+		var id int
+		var nama_barang string
+		var stok int
+		rows.Scan(&id, &nama_barang, &stok)
+		if err != nil {
+			log.Println("Error scan isi tabel pegawai", err.Error())
+		}
+		arrBarang = append(arrBarang, strconv.Itoa(id), nama_barang, strconv.Itoa(stok))
+		arrBarangs = append(arrBarangs, arrBarang)
+		arrBarang = nil
+	}
+	return arrBarangs
+}
+
+// DELETE
+func (mb *MenuBarang) DeleteBarang(id int) (error) {
+	_, err := mb.DB.Query("DELETE FROM barang where id_barang = ?", id)
+	if err != nil {
+		log.Println("Gagal saat menghapus", err.Error())
+		return errors.New("Data gagal dihapus")
+	}
+	// log.Println(row)
+	return nil
 }
