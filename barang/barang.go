@@ -79,3 +79,34 @@ func (mb *MenuBarang) EditInfoBarang(newBarang Barang, namaBarang string) (bool,
 
 	return true, nil
 }
+
+func (mb *MenuBarang) EditStokBarang(stokBarang int, namaBarang string) (bool, error) {
+	editInfoBarangQry, err := mb.DB.Prepare("UPDATE barang SET stok_barang = ? where nama_barang = ?")
+
+	if err != nil {
+		log.Println("Prepare update stok barang", err.Error())
+		return false, errors.New("prepare statement update stok barang error")
+	}
+
+	res, err := editInfoBarangQry.Exec(stokBarang, namaBarang)
+
+	if err != nil {
+		log.Println("Update stok Barang", err.Error())
+		return false, errors.New("Update stok Barang Error")
+	}
+
+	//Cek Baris yang terpengaruh query Update Info Barang
+	affRows, err := res.RowsAffected()
+
+	if err != nil {
+		log.Println("After Update stok Barang", err.Error())
+		return false, errors.New("Error setelah Update stok Barang")
+	}
+
+	if affRows < 0 {
+		log.Println("no records affected")
+		return false, errors.New("no Record")
+	}
+
+	return true, nil
+}
