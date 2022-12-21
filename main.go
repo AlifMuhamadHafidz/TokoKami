@@ -4,6 +4,7 @@ import (
 	"bufio"
 	f "fmt"
 	"os"
+	"strconv"
 	"toko/barang"
 	"toko/config"
 	"toko/pelanggan"
@@ -41,13 +42,23 @@ func main() {
 				var menuAdmin int
 
 				for isAdmin {
+					f.Println("====================")
 					f.Println("1. Register Pegawai")
+					f.Println("2. List Pegawai")
+					f.Println("3. Hapus Pegawai")
+					f.Println("4. Hapus Barang")
+					f.Println("5. Hapus Pelanggan")
+					f.Println("6. Hapus Transaksi")
+					f.Println("7. Hapus Nota")
 					f.Println("9. Logout")
 					f.Print("Masukan Pilihan : ")
 					f.Scanln(&menuAdmin)
+
 					switch menuAdmin {
+					
 					case 1:
 						var newUser users.Pegawai
+						f.Println("Halaman Tambah Pegawai")
 						f.Print("Masukkan nama : ")
 						f.Scanln(&newUser.Username)
 						f.Print("Masukkan password : ")
@@ -61,6 +72,45 @@ func main() {
 						} else {
 							f.Println("Gagal mendaftarn data")
 						}
+
+					// List pegawai
+					case 2:
+						f.Println("<<-- List Pegawai -->>")
+						f.Println("No. Nama")
+						listPegawai := authMenu.ListPegawai()
+						for i := 0; i < len(listPegawai); i++ {
+							f.Print(" ", i+1, ". ")
+							for j := 1; j < len(listPegawai[i]); j++ {
+								f.Print(listPegawai[i][j])
+							}
+							f.Println()
+						}
+
+					// Hapus pegawai
+					case 3:
+						var inputNomor int
+						f.Println("========================")
+						f.Println("~~ Halaman Hapus Pegawai ~~")
+						f.Print("Masukkan nomor pegawai yang akan dihapus: ")
+						f.Scanln(&inputNomor)
+						listPegawai := authMenu.ListPegawai()
+						idDelete, _ := strconv.Atoi(listPegawai[inputNomor-1][0])
+						err := authMenu.DeletePegawai(idDelete)
+						if err != nil {
+							f.Println("Data gagal dihapus", err.Error())
+						} else {
+							f.Println("Data berhasil dihapus")
+						}
+
+					case 4:
+						f.Println("Hapus Pelanggan")
+
+					case 5:
+						f.Println("Hapus Transaksi")
+
+					case 6:
+						f.Println("Hapus Nota")
+
 					case 9:
 						isAdmin = !isAdmin
 					}
