@@ -2,7 +2,6 @@ package main
 
 import (
 	"bufio"
-	"fmt"
 	f "fmt"
 	"os"
 	"strconv"
@@ -11,6 +10,7 @@ import (
 	"toko/pelanggan"
 	"toko/transaksi"
 	"toko/users"
+	"toko/nota"
 )
 
 func main() {
@@ -24,6 +24,7 @@ func main() {
 	var iniBarang = barang.MenuBarang{DB: conn}
 	var iniPelanggan = pelanggan.AuthPelanggan{DB: conn}
 	var iniTransaksi = transaksi.TransMenu{DB: conn}
+	var iniNota = nota.NotaMenu{DB: conn}
 
 	// membuat scan kalimat
 	scanner := bufio.NewScanner(os.Stdin)
@@ -44,6 +45,7 @@ func main() {
 			f.Scanln(&inputPassword)
 
 			if inputUsername == "admin" && inputPassword == "admin" {
+				f.Println("Welcome Admin")
 				var isAdmin bool = true
 				var menuAdmin int
 
@@ -265,7 +267,7 @@ func main() {
 						f.Print(">> Halaman Admin Hapus Transaksi\n\n")
 						var deleteTransaksi transaksi.Transaksi
 						f.Print("Masukan id Transaksi yang ingin dihapus: ")
-						fmt.Scanln(&deleteTransaksi.ID)
+						f.Scanln(&deleteTransaksi.ID)
 
 						res, err := iniTransaksi.DeleteTransaksi(deleteTransaksi)
 
@@ -379,7 +381,7 @@ func main() {
 
 						} else if inputMenuPegawai == 4 {
 							newTransaksi := transaksi.Transaksi{}
-							f.Println("\n======= TokoKami for Pegawai =======")
+							f.Println("\n======= TokoKami =======")
 							f.Print(">> Halaman Tambah Transaksi\n\n")
 							f.Print("Masukan id pelanggan: ")
 							f.Scanln(&newTransaksi.ID_Pelanggan)
@@ -393,23 +395,78 @@ func main() {
 								f.Println("Sukses Menambahkan Transaki")
 							}
 
-							// 23.38
-							// Print transaksi terakhir
-							// ambil id transaksi terakhir untuk dimasukkan ke tabel nota
-							// newNota := nota.Nota{}
-							// inputNota := 1
-							// for inputNota != 0 {
-							// var nota, jumlah int
-							// f.Print("Masukan id atau nama barang: ")
-							// f.Scanln(&nota)
-							// f.Print("Masukan jumlah yang mau dibeli: ")
-							// f.Scanln(&jumlah)
-							// // scan id tranaksi terakhir
-							// //panggil fungsi addnota
-							// f.Print("1. Belanja Lagi")
-							// f.Print("2. Checkout & Cetak Nota")
+							inputNota := 1
+							for inputNota != 0 {
+								f.Println("\n======= TokoKami =======")
+								f.Println(">> Halaman Daftar Transaksi")
+								f.Print("____________________________\n\n")
+								listTranNota := iniNota.ListTranNota()
+								for i := 0; i < 1; i++ {
+									f.Println("No Trans : ", listTranNota[0])
+									f.Println("Tanggal  : ", listTranNota[1])
+									f.Println("Pegawai  : ", listTranNota[2])
+									f.Println("Pembeli  : ", listTranNota[3])
+								}
+								f.Println("____________________________")
+								id, _ := strconv.Atoi(listTranNota[0])
+								listNota := iniNota.ListNota(id)
+								f.Println("No  |  Barang  |  Jumlah")
+								f.Println("-------------------")
+								for i := 0; i < len(listNota); i++ {
+									f.Print(i+1, " | ")
+									for j := 0; j < len(listNota[0]); j++ {
+										f.Print(listNota[i][j], " | ")
+									}
+									f.Println()
+								}
+								f.Println("____________________________")
 
-							// }
+								insertNota := nota.Nota{}
+								f.Println("======================")
+								f.Print("Masukan id barang: ")
+								f.Scanln(&insertNota.ID_Barang)
+								f.Print("Masukan jumlah: ")
+								f.Scanln(&insertNota.Jumlah)
+								insertNota.ID_Trans, _ = strconv.Atoi(listTranNota[0])
+
+								_, err := iniNota.AddNota(insertNota)
+
+								if err != nil {
+									f.Println("Nota Gagal Ditambahkan", err.Error())
+								}
+								f.Println("Nota Berhasil Ditambahkan")
+
+								f.Println("1. Belanja Lagi")
+								f.Println("0. Checkout & Cetak Nota")
+								f.Print("Tentukan pilihanmu: ")
+								f.Scanln(&inputNota)
+
+								if inputNota == 0 {
+									f.Println("\n======= TokoKami =======")
+									f.Println(">> Halaman Nota Oke")
+									f.Print("____________________________\n\n")
+									listTransNota := iniNota.ListTranNota()
+									for i := 0; i < 1; i++ {
+										f.Println("No Trans : ", listTransNota[0])
+										f.Println("Tanggal  : ", listTransNota[1])
+										f.Println("Pegawai  : ", listTransNota[2])
+										f.Println("Pembeli  : ", listTransNota[3])
+									}
+									f.Println("____________________________")
+									id, _ := strconv.Atoi(listTransNota[0])
+									listNotaOke := iniNota.ListNota(id)
+									f.Println("No  |  Barang  |  Jumlah")
+									f.Println("-------------------")
+									for i := 0; i < len(listNotaOke); i++ {
+										f.Print(i+1, " | ")
+										for j := 0; j < len(listNotaOke[0]); j++ {
+											f.Print(listNotaOke[i][j], " | ")
+										}
+										f.Println()
+									}
+									f.Println("____________________________")
+								}
+							}
 
 						} else if inputMenuPegawai == 5 {
 							f.Println("\n======= TokoKami for Pegawai =======")
