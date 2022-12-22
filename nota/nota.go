@@ -5,6 +5,7 @@ import (
 	"errors"
 	"log"
 	"strconv"
+	// "strconv"
 )
 
 type Nota struct {
@@ -74,6 +75,7 @@ func (nm *NotaMenu) ListTranNota() []string {
 		log.Println("SELECT ERROR", err.Error())
 	}
 	arrTran := []string{}
+	// arrTrans := [][]string{}
 	for rows.Next() {
 		var id_tran int
 		var tgl_trans string
@@ -84,6 +86,9 @@ func (nm *NotaMenu) ListTranNota() []string {
 			log.Println("Error scan isi tabel transaksi", err.Error())
 		}
 		arrTran = append(arrTran, strconv.Itoa(id_tran), tgl_trans, nama_peg, nama_cus)
+		// arrTrans = append(arrTrans, arrTran)
+		// arrTran = nil
 	}
+	// log.Println(arrTran)
 	return arrTran
 }
