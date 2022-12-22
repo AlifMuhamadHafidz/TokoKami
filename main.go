@@ -144,7 +144,7 @@ func main() {
 							f.Println("\n======= TokoKami for Admin =======")
 							f.Print(">> Halaman Admin Menu Barang\n\n")
 							// f.Println("1. Create Barang")
-							f.Println("1. List Barang") //sudah
+							f.Println("1. Show List Barang") //sudah
 							// f.Println("3. Update Barang")
 							f.Println("2. Delete Barang") //sudah
 							f.Println("0. <<= Back")      //sudah
@@ -316,6 +316,7 @@ func main() {
 						f.Println("3. Edit Stok Barang")
 						f.Println("4. Tambah Transaksi")
 						f.Println("5. Tambah Pelanggan")
+						f.Println("6. Show List Barang")
 						f.Println("9. Exit")
 						f.Print("Masukan Pilihan : ")
 						f.Scanln(&inputMenuPegawai)
@@ -485,6 +486,21 @@ func main() {
 							} else {
 								f.Println("Pelanggan Berhasil Ditambahkan")
 							}
+
+						} else if inputMenuPegawai == 6 {
+							listBarang := iniBarang.ListBarang()
+							f.Print(">> Halaman Daftar Barang\n\n")
+							f.Println("No |   Nama  | Stok")
+							f.Println("______________________")
+							// listBarang := iniBarang.ListBarang()
+							for i := 0; i < len(listBarang); i++ {
+								f.Print(" ", i+1, " | ")
+								for j := 1; j < len(listBarang[i]); j++ {
+									f.Print(listBarang[i][j], " | ")
+								}
+								f.Println()
+							}
+							f.Println("______________________")
 
 						} else if inputMenuPegawai == 9 {
 							isLogin = false
