@@ -18,7 +18,7 @@ type TransMenu struct {
 }
 
 func (tm *TransMenu) AddTransaksi(newTransaksi Transaksi) (bool, error) {
-	addTransQry, err := tm.DB.Prepare("INSERT into transaksi(id_pegawai, id_pelanggan) values (?, ?)")
+	addTransQry, err := tm.DB.Prepare("INSERT INTO transaksi(id_pegawai, id_pelanggan) values (?,?);")
 	if err != nil {
 		log.Println("insert transaksi prepare", err.Error())
 		return false, errors.New("prepare insert transaksi error")

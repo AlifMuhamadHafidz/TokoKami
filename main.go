@@ -8,6 +8,7 @@ import (
 	"toko/barang"
 	"toko/config"
 	"toko/pelanggan"
+	"toko/transaksi"
 	"toko/users"
 )
 
@@ -21,6 +22,7 @@ func main() {
 	var authMenu = users.AuthMenu{DB: conn}
 	var iniBarang = barang.MenuBarang{DB: conn}
 	var iniPelanggan = pelanggan.AuthPelanggan{DB: conn}
+	var iniTransaksi = transaksi.TransMenu{DB: conn}
 
 	// membuat scan kalimat
 	scanner := bufio.NewScanner(os.Stdin)
@@ -48,12 +50,12 @@ func main() {
 				for isAdmin {
 					f.Println("\n======= TokoKami =======")
 					f.Print(">> Halaman Menu Admin\n\n")
-					f.Println("1. Pegawai")   //sudah
-					f.Println("2. Barang")    //sudah
+					f.Println("1. Pegawai") //sudah
+					f.Println("2. Barang")  //sudah
 					f.Println("3. Pelanggan")
 					f.Println("4. Transaksi")
 					f.Println("5. Nota")
-					f.Println("0. Logout")		//sudah
+					f.Println("0. Logout") //sudah
 					f.Print("Masukan Pilihan : ")
 					f.Scanln(&menuAdmin)
 
@@ -139,13 +141,13 @@ func main() {
 							// f.Println("1. Create Barang")
 							f.Println("1. Read Barang") //sudah
 							// f.Println("3. Update Barang")
-							f.Println("2. Delete Pegawai") //sudah
-							f.Println("0. <<= Back")       //sudah
+							f.Println("2. Delete Barang") //sudah
+							f.Println("0. <<= Back")      //sudah
 							f.Print("Masukan Pilihan: ")
 							f.Scanln(&menuAdminBarang)
 
 							// variabel untuk menyimpan hasil select daftar barang
-							listBarang := iniBarang.ListBarang()	
+							listBarang := iniBarang.ListBarang()
 
 							switch menuAdminBarang {
 
@@ -182,14 +184,61 @@ func main() {
 								}
 							}
 						}
+						
 						// END MENUADMIN ==> BARANG
 
 					// START MENUADMIN ==> PELANGGAN
+
+					// 22.20
 					case 3:
+						menuAdminPelanggan := 1
+						for menuAdminPelanggan != 0 {
 						f.Println("\n======= TokoKami =======")
 						f.Print(">> Halaman Admin Menu Pelanggan\n\n")
-						f.Println("Maintenance")
+						// f.Println("1. Create Pelanggan")
+						f.Println("1. Read Pelanggan") //sudah
+						// f.Println("3. Update Pelanggan")
+						f.Println("2. Delete Pelanggan") //sudah
+						f.Println("0. <<= Back")         //sudah
+						f.Print("Masukan Pilihan: ")
+						f.Scanln(&menuAdminPelanggan)
 
+						// variabel untuk menyimpan hasil select daftar pelanggan
+						listPelanggan := iniPelanggan.ListPelanggan()
+
+						switch menuAdminPelanggan {
+
+						// Read Pelanggan
+						case 1:
+							f.Println("\n======= TokoKami =======")
+							f.Print(">> Halaman Daftar Pelanggan\n\n")
+							f.Println("No | Nama")
+							f.Println("______________________")
+							for i := 0; i < len(listPelanggan); i++ {
+									f.Print(" ", i+1, " | ")
+									for j := 1; j < len(listPelanggan[i]); j++ {
+										f.Print(listPelanggan[i][j])
+									}
+									f.Println()
+								}
+							f.Println("______________________")
+
+						// Delete Pelanggan
+						case 2:
+							var inputNomor int
+							f.Println("\n======= TokoKami =======")
+							f.Print(">> Halaman Hapus Pelanggan\n\n")
+							f.Print("Masukkan nomor pelanggan yang akan dihapus: ")
+							f.Scanln(&inputNomor)
+							idDelete, _ := strconv.Atoi(listPelanggan[inputNomor-1][0])
+							err := iniPelanggan.DeletePelanggan(idDelete)
+							if err != nil {
+								f.Println("Gagal menghapus pelanggan", err.Error())
+							} else {
+								f.Println("Pelanggan berhasil dihapus")
+							}
+						}
+					}
 					// END MENUADMIN ==> PELANGGAN
 
 					// START MENUADMIN ==> TRANSAKSI
@@ -229,6 +278,7 @@ func main() {
 						f.Println("1. Tambah Barang")
 						f.Println("2. Edit Info Barang")
 						f.Println("3. Edit Stok Barang")
+						f.Println("4. Tambah Transaksi")
 						f.Println("8. Tambah Pelanggan")
 						f.Println("9. Exit")
 						f.Print("Masukan Pilihan : ")
@@ -293,6 +343,41 @@ func main() {
 							if isStokUpdated {
 								f.Println("Berhasil Update Stok Barang")
 							}
+
+						} else if inputMenuPegawai == 4 {
+							newTransaksi := transaksi.Transaksi{}
+							f.Println("\n======= TokoKami =======")
+							f.Print(">> Halaman Tambah Transaksi\n\n")
+							f.Print("Masukan id pelanggan: ")
+							f.Scanln(&newTransaksi.ID_Pelanggan)
+							newTransaksi.ID_Pegawai = res.ID
+
+							_, err := iniTransaksi.AddTransaksi(newTransaksi)
+
+							if err != nil {
+								f.Println("Gagal Menambahkan Transaksi", err.Error())
+							} else {
+								f.Println("Sukses Menambahkan Transaki")
+							}
+
+							// 23.38
+							// Print transaksi terakhir
+							// ambil id transaksi terakhir untuk dimasukkan ke tabel nota
+							// newNota := nota.Nota{}
+							// inputNota := 1
+							// for inputNota != 0 {
+							// var nota, jumlah int
+							// f.Print("Masukan id atau nama barang: ")
+							// f.Scanln(&nota)
+							// f.Print("Masukan jumlah yang mau dibeli: ")
+							// f.Scanln(&jumlah)
+							// // scan id tranaksi terakhir
+							// //panggil fungsi addnota
+							// f.Print("1. Belanja Lagi")
+							// f.Print("2. Checkout & Cetak Nota")
+
+							// }
+
 
 						} else if inputMenuPegawai == 8 {
 							f.Println("\n======= TokoKami =======")
