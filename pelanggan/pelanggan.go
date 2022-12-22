@@ -8,8 +8,9 @@ import (
 )
 
 type Pelanggan struct {
-	ID		int
-	Nama	string
+	ID         int
+	Nama       string
+	ID_Pegawai int
 }
 
 type AuthPelanggan struct {
@@ -18,7 +19,7 @@ type AuthPelanggan struct {
 
 // Function untuk menambah pelanggan baru oleh pegawai
 func (ape *AuthPelanggan) TambahPelanggan(newPelanggan Pelanggan) (bool, error) {
-	addPelangganQry, err := ape.DB.Prepare("INSERT INTO pelanggan (nama) values (?)")
+	addPelangganQry, err := ape.DB.Prepare("INSERT INTO pelanggan (nama, id_pegawai) values (?,?)")
 	if err != nil {
 		log.Println("Prepare insert pelanggan ", err.Error())
 		return false, errors.New("insert pelanggan error")
@@ -29,7 +30,7 @@ func (ape *AuthPelanggan) TambahPelanggan(newPelanggan Pelanggan) (bool, error) 
 		return false, errors.New("name sudah digunakan")
 	}
 
-	res, err := addPelangganQry.Exec(newPelanggan.Nama)
+	res, err := addPelangganQry.Exec(newPelanggan.Nama, newPelanggan.ID_Pegawai)
 	if err != nil {
 		log.Println("insert pelanggan ", err.Error())
 		return false, errors.New("insert pelanggan error")
@@ -86,9 +87,8 @@ func (ape *AuthPelanggan) ListPelanggan() [][]string {
 	return arrPelanggans
 }
 
-
 // function hapus pelanggan
-func (ape *AuthPelanggan) DeletePelanggan(id int) (error) {
+func (ape *AuthPelanggan) DeletePelanggan(id int) error {
 	_, err := ape.DB.Query("DELETE FROM pelanggan where id_pelanggan = ?", id)
 	if err != nil {
 		log.Println("Gagal saat menghapus", err.Error())
@@ -97,4 +97,5 @@ func (ape *AuthPelanggan) DeletePelanggan(id int) (error) {
 	// log.Println(row)
 	return nil
 }
+
 // 22.20

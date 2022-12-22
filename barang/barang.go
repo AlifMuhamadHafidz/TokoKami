@@ -8,28 +8,28 @@ import (
 )
 
 type Barang struct {
-	ID   int
-	Nama string
-	Info string
-	Stok string
+	ID         int
+	Nama       string
+	Info       string
+	Stok       string
+	ID_Pegawai int
 }
 
 type MenuBarang struct {
 	DB *sql.DB
 }
 
-
 // CREATE
 func (mb *MenuBarang) TambahBarang(newBarang Barang) (int, error) {
 	// menyiapakn query untuk insert
-	addBarangQry, err := mb.DB.Prepare("INSERT INTO barang (nama_barang, info_barang, stok_barang) values (?,?,?)")
+	addBarangQry, err := mb.DB.Prepare("INSERT INTO barang (nama_barang,id_pegawai, info_barang, stok_barang) values (?,?,?,?)")
 	if err != nil {
 		log.Println("Prepare Insert Barang", err.Error())
 		return 0, errors.New("Prepare statement insert barang error")
 	}
 
 	// menjalankan query dengan parameter tertentu
-	res, err := addBarangQry.Exec(newBarang.Nama, newBarang.Info, newBarang.Stok)
+	res, err := addBarangQry.Exec(newBarang.Nama, newBarang.ID_Pegawai, newBarang.Info, newBarang.Stok)
 	if err != nil {
 		log.Println("Insert barang", err.Error())
 		return 0, errors.New("Insert barang error")
@@ -52,8 +52,7 @@ func (mb *MenuBarang) TambahBarang(newBarang Barang) (int, error) {
 	return int(id), nil
 }
 
-
-//UPDATE 1
+// UPDATE 1
 func (mb *MenuBarang) EditInfoBarang(newBarang Barang, namaBarang string) (bool, error) {
 	editInfoBarangQry, err := mb.DB.Prepare("UPDATE barang SET info_barang = ? where nama_barang = ?")
 
@@ -117,7 +116,7 @@ func (mb *MenuBarang) EditStokBarang(stokBarang int, namaBarang string) (bool, e
 	return true, nil
 }
 
-//READ
+// READ
 func (mb *MenuBarang) ListBarang() [][]string {
 	rows, err := mb.DB.Query("SELECT id_barang, nama_barang, stok_barang FROM barang")
 	if err != nil {
@@ -141,7 +140,7 @@ func (mb *MenuBarang) ListBarang() [][]string {
 }
 
 // DELETE
-func (mb *MenuBarang) DeleteBarang(id int) (error) {
+func (mb *MenuBarang) DeleteBarang(id int) error {
 	_, err := mb.DB.Query("DELETE FROM barang where id_barang = ?", id)
 	if err != nil {
 		log.Println("Gagal saat menghapus", err.Error())

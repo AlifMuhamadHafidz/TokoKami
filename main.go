@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"fmt"
 	f "fmt"
 	"os"
 	"strconv"
@@ -42,18 +43,17 @@ func main() {
 			f.Print("Masukan Password : ")
 			f.Scanln(&inputPassword)
 
-			if inputUsername == "a" && inputPassword == "a" {
-				f.Println("Welcome Admin")
+			if inputUsername == "admin" && inputPassword == "admin" {
 				var isAdmin bool = true
 				var menuAdmin int
 
 				for isAdmin {
-					f.Println("\n======= TokoKami =======")
+					f.Println("\n======= TokoKami for Admin =======")
 					f.Print(">> Halaman Menu Admin\n\n")
 					f.Println("1. Pegawai") //sudah
 					f.Println("2. Barang")  //sudah
 					f.Println("3. Pelanggan")
-					f.Println("4. Transaksi")
+					f.Println("4. Hapus Transaksi")
 					f.Println("5. Nota")
 					f.Println("0. Logout") //sudah
 					f.Print("Masukan Pilihan : ")
@@ -64,7 +64,7 @@ func main() {
 					case 1:
 						menuAdminPegawai := 1
 						for menuAdminPegawai != 0 {
-							f.Println("\n======= TokoKami =======")
+							f.Println("\n======= TokoKami for Admin =======")
 							f.Print(">> Halaman Admin Menu Pegawai\n\n")
 							f.Println("1. Create Pegawai") //sudah
 							f.Println("2. Read Pegawai")   //sudah
@@ -81,7 +81,7 @@ func main() {
 							// Create Pegawai
 							case 1:
 								var newUser users.Pegawai
-								f.Println("\n======= TokoKami =======")
+								f.Println("\n======= TokoKami for Admin =======")
 								f.Print(">> Halaman Register Pegawai\n\n")
 								f.Print("Masukkan nama : ")
 								f.Scanln(&newUser.Username)
@@ -99,7 +99,7 @@ func main() {
 
 							// Read Pegawai
 							case 2:
-								f.Println("\n======= TokoKami =======")
+								f.Println("\n======= TokoKami for Admin =======")
 								f.Print(">> Halaman Daftar Pegawai\n\n")
 								f.Println("No | Nama")
 								f.Println("_____________")
@@ -116,7 +116,7 @@ func main() {
 							// Delete Pegawai
 							case 3:
 								var inputNomor int
-								f.Println("\n======= TokoKami =======")
+								f.Println("\n======= TokoKami for Admin =======")
 								f.Print(">> Halaman Hapus Pegawai\n\n")
 								f.Print("Masukkan nomor pegawai yang akan dihapus: ")
 								f.Scanln(&inputNomor)
@@ -136,7 +136,7 @@ func main() {
 					case 2:
 						menuAdminBarang := 1
 						for menuAdminBarang != 0 {
-							f.Println("\n======= TokoKami =======")
+							f.Println("\n======= TokoKami for Admin =======")
 							f.Print(">> Halaman Admin Menu Barang\n\n")
 							// f.Println("1. Create Barang")
 							f.Println("1. Read Barang") //sudah
@@ -153,7 +153,7 @@ func main() {
 
 							// Read Barang
 							case 1:
-								f.Println("\n======= TokoKami =======")
+								f.Println("\n======= TokoKami for Admin =======")
 								f.Print(">> Halaman Daftar Barang\n\n")
 								f.Println("No |   Nama  | Stok")
 								f.Println("______________________")
@@ -170,7 +170,7 @@ func main() {
 							// Delete Barang
 							case 2:
 								var inputNomor int
-								f.Println("\n======= TokoKami =======")
+								f.Println("\n======= TokoKami for Admin =======")
 								f.Print(">> Halaman Hapus Barang\n\n")
 								f.Print("Masukkan nomor barang yang akan dihapus: ")
 								f.Scanln(&inputNomor)
@@ -184,7 +184,7 @@ func main() {
 								}
 							}
 						}
-						
+
 						// END MENUADMIN ==> BARANG
 
 					// START MENUADMIN ==> PELANGGAN
@@ -193,63 +193,77 @@ func main() {
 					case 3:
 						menuAdminPelanggan := 1
 						for menuAdminPelanggan != 0 {
-						f.Println("\n======= TokoKami =======")
-						f.Print(">> Halaman Admin Menu Pelanggan\n\n")
-						// f.Println("1. Create Pelanggan")
-						f.Println("1. Read Pelanggan") //sudah
-						// f.Println("3. Update Pelanggan")
-						f.Println("2. Delete Pelanggan") //sudah
-						f.Println("0. <<= Back")         //sudah
-						f.Print("Masukan Pilihan: ")
-						f.Scanln(&menuAdminPelanggan)
+							f.Println("\n======= TokoKami for Admin =======")
+							f.Print(">> Halaman Admin Menu Pelanggan\n\n")
+							// f.Println("1. Create Pelanggan")
+							f.Println("1. Read Pelanggan") //sudah
+							// f.Println("3. Update Pelanggan")
+							f.Println("2. Delete Pelanggan") //sudah
+							f.Println("0. <<= Back")         //sudah
+							f.Print("Masukan Pilihan: ")
+							f.Scanln(&menuAdminPelanggan)
 
-						// variabel untuk menyimpan hasil select daftar pelanggan
-						listPelanggan := iniPelanggan.ListPelanggan()
+							// variabel untuk menyimpan hasil select daftar pelanggan
+							listPelanggan := iniPelanggan.ListPelanggan()
 
-						switch menuAdminPelanggan {
+							switch menuAdminPelanggan {
 
-						// Read Pelanggan
-						case 1:
-							f.Println("\n======= TokoKami =======")
-							f.Print(">> Halaman Daftar Pelanggan\n\n")
-							f.Println("No | Nama")
-							f.Println("______________________")
-							for i := 0; i < len(listPelanggan); i++ {
+							// Read Pelanggan
+							case 1:
+								f.Println("\n======= TokoKami for Admin =======")
+								f.Print(">> Halaman Daftar Pelanggan\n\n")
+								f.Println("No | Nama")
+								f.Println("______________________")
+								for i := 0; i < len(listPelanggan); i++ {
 									f.Print(" ", i+1, " | ")
 									for j := 1; j < len(listPelanggan[i]); j++ {
 										f.Print(listPelanggan[i][j])
 									}
 									f.Println()
 								}
-							f.Println("______________________")
+								f.Println("______________________")
 
-						// Delete Pelanggan
-						case 2:
-							var inputNomor int
-							f.Println("\n======= TokoKami =======")
-							f.Print(">> Halaman Hapus Pelanggan\n\n")
-							f.Print("Masukkan nomor pelanggan yang akan dihapus: ")
-							f.Scanln(&inputNomor)
-							idDelete, _ := strconv.Atoi(listPelanggan[inputNomor-1][0])
-							err := iniPelanggan.DeletePelanggan(idDelete)
-							if err != nil {
-								f.Println("Gagal menghapus pelanggan", err.Error())
-							} else {
-								f.Println("Pelanggan berhasil dihapus")
+							// Delete Pelanggan
+							case 2:
+								var inputNomor int
+								f.Println("\n======= TokoKami for Admin =======")
+								f.Print(">> Halaman Hapus Pelanggan\n\n")
+								f.Print("Masukkan nomor pelanggan yang akan dihapus: ")
+								f.Scanln(&inputNomor)
+								idDelete, _ := strconv.Atoi(listPelanggan[inputNomor-1][0])
+								err := iniPelanggan.DeletePelanggan(idDelete)
+								if err != nil {
+									f.Println("Gagal menghapus pelanggan", err.Error())
+								} else {
+									f.Println("Pelanggan berhasil dihapus")
+								}
 							}
 						}
-					}
 					// END MENUADMIN ==> PELANGGAN
 
 					// START MENUADMIN ==> TRANSAKSI
 					case 4:
-						f.Println("\n======= TokoKami =======")
-						f.Print(">> Halaman Admin Menu Transaksi\n\n")
-						f.Println("Maintenance")
+						f.Println("\n======= TokoKami for Admin =======")
+						f.Print(">> Halaman Admin Hapus Transaksi\n\n")
+						var deleteTransaksi transaksi.Transaksi
+						f.Print("Masukan id Transaksi yang ingin dihapus: ")
+						fmt.Scanln(&deleteTransaksi.ID)
+
+						res, err := iniTransaksi.DeleteTransaksi(deleteTransaksi)
+
+						if err != nil {
+							f.Println(err.Error())
+						}
+
+						if res {
+							f.Println("Sukses menghapus Transaksi")
+						} else {
+							f.Println("Gagal menghapus Transaksi")
+						}
 
 					// START MENUADMIN ==> NOTA
 					case 5:
-						f.Println("\n======= TokoKami =======")
+						f.Println("\n======= TokoKami for Admin =======")
 						f.Print(">> Halaman Admin Menu Nota\n\n")
 						f.Println("Maintenance")
 
@@ -273,19 +287,19 @@ func main() {
 					isLogin := true
 					inputMenuPegawai := 0
 					for isLogin {
-						f.Println("\n======= TokoKami =======")
+						f.Println("\n======= TokoKami for Pegawai =======")
 						f.Print(">> Halaman Menu Pegawai\n\n")
 						f.Println("1. Tambah Barang")
 						f.Println("2. Edit Info Barang")
 						f.Println("3. Edit Stok Barang")
 						f.Println("4. Tambah Transaksi")
-						f.Println("8. Tambah Pelanggan")
+						f.Println("5. Tambah Pelanggan")
 						f.Println("9. Exit")
 						f.Print("Masukan Pilihan : ")
 						f.Scanln(&inputMenuPegawai)
 
 						if inputMenuPegawai == 1 {
-							f.Println("\n======= TokoKami =======")
+							f.Println("\n======= TokoKami for Pegawai =======")
 							f.Print(">> Halaman Tambah Barang\n\n")
 							insertBarang := barang.Barang{}
 							f.Print("Nama Barang: ")
@@ -296,6 +310,7 @@ func main() {
 							insertBarang.Info = scanner.Text()
 							f.Print("Jumlah barang: ")
 							f.Scanln(&insertBarang.Stok)
+							insertBarang.ID_Pegawai = res.ID
 
 							_, err := iniBarang.TambahBarang(insertBarang)
 							if err != nil {
@@ -305,7 +320,7 @@ func main() {
 
 						} else if inputMenuPegawai == 2 {
 							updateBarang := barang.Barang{}
-							f.Println("\n======= TokoKami =======")
+							f.Println("\n======= TokoKami for Pegawai =======")
 							f.Print(">> Halaman Update Info Barang\n\n")
 							f.Print("Masukan Nama Barang : ")
 							scanner.Scan()
@@ -326,7 +341,7 @@ func main() {
 						} else if inputMenuPegawai == 3 {
 							var updateStokBarang int
 							updateBarang := barang.Barang{}
-							f.Println("\n======= TokoKami =======")
+							f.Println("\n======= TokoKami for Pegawai =======")
 							f.Print(">> Halaman Update Stok Barang\n\n")
 							f.Print("Masukan Stok barang terbaru : ")
 							f.Scanln(&updateStokBarang)
@@ -346,7 +361,7 @@ func main() {
 
 						} else if inputMenuPegawai == 4 {
 							newTransaksi := transaksi.Transaksi{}
-							f.Println("\n======= TokoKami =======")
+							f.Println("\n======= TokoKami for Pegawai =======")
 							f.Print(">> Halaman Tambah Transaksi\n\n")
 							f.Print("Masukan id pelanggan: ")
 							f.Scanln(&newTransaksi.ID_Pelanggan)
@@ -378,14 +393,14 @@ func main() {
 
 							// }
 
-
-						} else if inputMenuPegawai == 8 {
-							f.Println("\n======= TokoKami =======")
+						} else if inputMenuPegawai == 5 {
+							f.Println("\n======= TokoKami for Pegawai =======")
 							f.Print(">> Halaman Register Pelanggan\n\n")
 							insertPelanggan := pelanggan.Pelanggan{}
 							f.Print("Nama Pelanggan: ")
 							scanner.Scan()
 							insertPelanggan.Nama = scanner.Text()
+							insertPelanggan.ID_Pegawai = res.ID
 
 							_, err := iniPelanggan.TambahPelanggan(insertPelanggan)
 							if err != nil {
