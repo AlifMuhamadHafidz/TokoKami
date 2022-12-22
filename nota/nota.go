@@ -42,7 +42,6 @@ func (nm *NotaMenu) AddNota(newNota Nota) (bool, error) {
 		log.Println("no record affected")
 		return true, errors.New("no record")
 	}
-
 	return true, nil
 }
 
@@ -91,4 +90,22 @@ func (nm *NotaMenu) ListTranNota() []string {
 	}
 	// log.Println(arrTran)
 	return arrTran
+}
+
+func (nm *NotaMenu) SelectStok(id int) []string {
+	row, err := nm.DB.Query("SELECT nama_barang, stok_barang FROM barang WHERE id_barang = ?;", id)
+	if err != nil {
+		log.Println("SELECT ERROR", err.Error())
+	}
+	arrStok := []string{}
+	for row.Next() {
+		var stok int
+		var nama_barang string
+		row.Scan(&nama_barang, &stok)
+		if err != nil {
+			log.Println("Error scan isi tabel barang stok", err.Error())
+		}
+		arrStok = append(arrStok, nama_barang,strconv.Itoa(stok))
+	}
+	return arrStok
 }
