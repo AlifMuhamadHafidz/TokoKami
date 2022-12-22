@@ -383,6 +383,7 @@ func main() {
 							}
 
 						} else if inputMenuPegawai == 4 {
+							
 							newTransaksi := transaksi.Transaksi{}
 							f.Println("\n======= TokoKami =======")
 							f.Print(">> Halaman Tambah Transaksi\n\n")
@@ -431,19 +432,37 @@ func main() {
 								f.Print("Masukan jumlah: ")
 								f.Scanln(&insertNota.Jumlah)
 								insertNota.ID_Trans, _ = strconv.Atoi(listTranNota[0])
-
+								
+								//
+								stokBarang := iniNota.SelectStok(insertNota.ID_Barang)
+								stok, _ := strconv.Atoi(stokBarang[1])
+								
+								if stok-insertNota.Jumlah < 0 {
+									f.Println("Maaf stok hanya tersisa: ", stok)
+									continue
+								}
 								_, err := iniNota.AddNota(insertNota)
+								sisaStok :=  stok- insertNota.Jumlah
+								isStokUpdated, err := iniBarang.EditStokBarang(sisaStok, stokBarang[0])
+								if err != nil {
+									f.Println(err.Error())
+								}
+								if isStokUpdated {}
+								//
+
 
 								if err != nil {
 									f.Println("Nota Gagal Ditambahkan", err.Error())
 								}
 								f.Println("Nota Berhasil Ditambahkan")
-
+								
+								f.Println("\n======================")
 								f.Println("1. Belanja Lagi")
 								f.Println("0. Checkout & Cetak Nota")
 								f.Print("Tentukan pilihanmu: ")
 								f.Scanln(&inputNota)
 
+								// Selesai transaksi dan cetak nota
 								if inputNota == 0 {
 									f.Println("\n======= TokoKami =======")
 									f.Println(">> Halaman Nota Oke")
