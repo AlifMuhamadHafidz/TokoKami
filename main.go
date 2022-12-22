@@ -53,8 +53,9 @@ func main() {
 					f.Println("1. Pegawai") //sudah
 					f.Println("2. Barang")  //sudah
 					f.Println("3. Pelanggan")
-					f.Println("4. Hapus Transaksi")
-					f.Println("5. Nota")
+					f.Println("4. Show Transaksi")
+					f.Println("5. Hapus Transaksi")
+					f.Println("6. Nota")
 					f.Println("0. Logout") //sudah
 					f.Print("Masukan Pilihan : ")
 					f.Scanln(&menuAdmin)
@@ -239,10 +240,27 @@ func main() {
 								}
 							}
 						}
-					// END MENUADMIN ==> PELANGGAN
+						// END MENUADMIN ==> PELANGGAN
 
-					// START MENUADMIN ==> TRANSAKSI
+						// START MENUADMIN ==> TRANSAKSI
 					case 4:
+						f.Println("\n======= TokoKami for Admin =======")
+						f.Print(">> Halaman Admin Show Transaksi\n\n")
+						var showTransaksi transaksi.Transaksi
+
+						res, err := iniTransaksi.ShowTransaksi(showTransaksi)
+
+						if err != nil {
+							f.Println(err.Error())
+						}
+
+						if res {
+							f.Println("Sukses Show Transaksi")
+						} else {
+							f.Println("Gagal Show Transaksi")
+						}
+
+					case 5:
 						f.Println("\n======= TokoKami for Admin =======")
 						f.Print(">> Halaman Admin Hapus Transaksi\n\n")
 						var deleteTransaksi transaksi.Transaksi
@@ -262,7 +280,7 @@ func main() {
 						}
 
 					// START MENUADMIN ==> NOTA
-					case 5:
+					case 6:
 						f.Println("\n======= TokoKami for Admin =======")
 						f.Print(">> Halaman Admin Menu Nota\n\n")
 						f.Println("Maintenance")

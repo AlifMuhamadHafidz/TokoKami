@@ -3,6 +3,7 @@ package transaksi
 import (
 	"database/sql"
 	"errors"
+	"fmt"
 	"log"
 )
 
@@ -73,30 +74,24 @@ func (tm *TransMenu) DeleteTransaksi(deleteTransaksi Transaksi) (bool, error) {
 	return true, nil
 }
 
-// func (tm *TransMenu) ShowTransaksi(newTransaksi Transaksi) (bool, error) {
-// 	addTransQry, err := tm.DB.Prepare("SELECT * FROM transaksi;")
-// 	if err != nil {
-// 		log.Println("select transaksi prepare", err.Error())
-// 		return false, errors.New("prepare select transaksi error")
-// 	}
+func (tm *TransMenu) ShowTransaksi(newTransaksi Transaksi) (bool, error) {
 
-// 	res, err := addTransQry.Exec(newTransaksi)
-// 	if err != nil {
-// 		log.Println("select transaksi", err.Error())
-// 		return false, errors.New("select transaksi error")
-// 	}
+	res, err := tm.DB.Query("SELECT * FROM transaksi")
+	if err != nil {
+		log.Println("select transaksi", err.Error())
+		return false, errors.New("select transaksi error")
+	}
 
-// 	affRows, err := res.RowsAffected()
+	for res.Next() {
+		var showTransaksi Transaksi
 
-// 	if err != nil {
-// 		log.Println("select insert transaksi", err.Error())
-// 		return false, errors.New("select insert transaksi error")
-// 	}
+		err := res.Scan(&showTransaksi.ID, &showTransaksi.ID_Pegawai, &showTransaksi.ID_Pelanggan, &showTransaksi.ID_Barang)
 
-// 	if affRows <= 0 {
-// 		log.Println("no record affected")
-// 		return true, errors.New("no record")
-// 	}
+		if err != nil {
+			fmt.Println(err.Error())
+		}
+		fmt.Printf("%v\n", showTransaksi)
+	}
 
-// 	return true, nil
-// }
+	return true, nil
+}
