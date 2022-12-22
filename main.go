@@ -7,10 +7,10 @@ import (
 	"strconv"
 	"toko/barang"
 	"toko/config"
+	"toko/nota"
 	"toko/pelanggan"
 	"toko/transaksi"
 	"toko/users"
-	"toko/nota"
 )
 
 // test

@@ -12,6 +12,7 @@ type Transaksi struct {
 	ID_Pegawai   int
 	ID_Pelanggan int
 	ID_Barang    int
+	Tanggal      string
 }
 
 type TransMenu struct {
@@ -85,7 +86,7 @@ func (tm *TransMenu) ShowTransaksi(newTransaksi Transaksi) (bool, error) {
 	for res.Next() {
 		var showTransaksi Transaksi
 
-		err := res.Scan(&showTransaksi.ID, &showTransaksi.ID_Pegawai, &showTransaksi.ID_Pelanggan, &showTransaksi.ID_Barang)
+		err := res.Scan(&showTransaksi.ID, &showTransaksi.ID_Pegawai, &showTransaksi.ID_Pelanggan, &showTransaksi.Tanggal)
 
 		if err != nil {
 			fmt.Println(err.Error())
