@@ -67,8 +67,8 @@ func main() {
 						for menuAdminPegawai != 0 {
 							f.Println("\n======= TokoKami for Admin =======")
 							f.Print(">> Halaman Admin Menu Pegawai\n\n")
-							f.Println("1. Create Pegawai") //sudah
-							f.Println("2. Read Pegawai")   //sudah
+							f.Println("1. Register Pegawai") //sudah
+							f.Println("2. List Pegawai")     //sudah
 							// f.Println("3. Update Pegawai")
 							f.Println("3. Delete Pegawai") //sudah
 							f.Println("0. <<= Back")       //sudah
@@ -140,7 +140,7 @@ func main() {
 							f.Println("\n======= TokoKami for Admin =======")
 							f.Print(">> Halaman Admin Menu Barang\n\n")
 							// f.Println("1. Create Barang")
-							f.Println("1. Read Barang") //sudah
+							f.Println("1. List Barang") //sudah
 							// f.Println("3. Update Barang")
 							f.Println("2. Delete Barang") //sudah
 							f.Println("0. <<= Back")      //sudah
@@ -197,7 +197,7 @@ func main() {
 							f.Println("\n======= TokoKami for Admin =======")
 							f.Print(">> Halaman Admin Menu Pelanggan\n\n")
 							// f.Println("1. Create Pelanggan")
-							f.Println("1. Read Pelanggan") //sudah
+							f.Println("1. List Pelanggan") //sudah
 							// f.Println("3. Update Pelanggan")
 							f.Println("2. Delete Pelanggan") //sudah
 							f.Println("0. <<= Back")         //sudah
