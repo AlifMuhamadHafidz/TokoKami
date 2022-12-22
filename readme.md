@@ -29,11 +29,17 @@ Tokokami merupakan sebuah simulasi toko online berbasi CLI dimana kami membuat b
 
 # Menu Admin
 1. Pegawai
-Di menu ini terdapat pilihan Register Pegawai, Lihat list Pegawai, dan Delete Pegawai
+
+    Di menu ini terdapat pilihan Register Pegawai, Lihat list Pegawai, dan Delete Pegawai
+
 2. Barang
-Di menu ini terdapat pilihan Lihat list Barang, dan Delete Barang
+
+    Di menu ini terdapat pilihan Lihat list Barang, dan Delete Barang
+
 3. Pelanggan
-Di menu ini terdapat pilihan Lihat list Pelanggan, dan Delete Pelanggan
+
+    Di menu ini terdapat pilihan Lihat list Pelanggan, dan Delete Pelanggan
+
 4. Show Transaksi
 5. Hapus Transaksi
 6. NOTA
