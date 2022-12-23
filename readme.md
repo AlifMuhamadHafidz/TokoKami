@@ -42,7 +42,6 @@ Tokokami merupakan sebuah simulasi toko online berbasi CLI dimana kami membuat b
 
 4. Show Transaksi
 5. Hapus Transaksi
-6. NOTA
 0. Logout
 
 # Menu Pegawai
